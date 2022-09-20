@@ -23,3 +23,7 @@ variable "aws_public_subnets" {
   nullable = false
   default = ["10.0.4.0/24", "10.0.5.0/24", "10.0.6.0/24"]
 }
+
+variable "eks_cluster_name" {
+  default = "eks-cluster-example"
+}

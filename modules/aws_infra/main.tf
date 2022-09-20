@@ -1,27 +1,44 @@
+# Kubernetes provider
+# https://learn.hashicorp.com/terraform/kubernetes/provision-eks-cluster#optional-configure-terraform-kubernetes-provider
+# To learn how to schedule deployments and services using the provider, go here: https://learn.hashicorp.com/terraform/kubernetes/deploy-nginx-kubernetes
+# The Kubernetes provider is included in this file so the EKS module can complete successfully. Otherwise, it throws an error when creating `kubernetes_config_map.aws_auth`.
+# You should **not** schedule deployments and services in this workspace. This keeps workspaces modular (one for provision EKS, another for scheduling Kubernetes resources) as per best practices.
+provider "kubernetes" {
+  host                   = module.eks.cluster_endpoint
+  cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data)
+}
+
+provider "aws" {
+  region = var.region
+}
+
 data "aws_availability_zones" "available" {}
 
-module "vpc" {
-  source  = "terraform-aws-modules/vpc/aws"
+locals {
+  cluster_name = var.eks_cluster_name
+  region = var.region
+}
 
-  name = var.vpc_name
+resource "random_string" "suffix" {
+  length  = 8
+  special = false
+}
 
-  cidr = var.aws_vpc_cidr
-  azs  = slice(data.aws_availability_zones.available.names, 0, 3)
+locals {
+  kubeconfig = templatefile("templates/kubeconfig.tpl", {
+    kubeconfig_name                   = "kubeconfig_file"
+    endpoint                          = module.eks.cluster_endpoint
+    cluster_auth_base64               = module.eks.cluster_certificate_authority_data
+    aws_authenticator_command         = "aws"
+    aws_authenticator_command_args    = ["--region", local.region, "eks", "get-token", "--cluster-name", local.cluster_name]
+    aws_authenticator_additional_args = []
+    aws_authenticator_env_variables   = {}
+  })
+}
 
-  private_subnets = var.aws_private_subnets
-  public_subnets  = var.aws_public_subnets
+output "kubeconfig" { value = local.kubeconfig }
 
-  enable_nat_gateway   = true
-  single_nat_gateway   = true
-  enable_dns_hostnames = true
-
-#   public_subnet_tags = {
-#     "kubernetes.io/cluster/${local.cluster_name}" = "shared"
-#     "kubernetes.io/role/elb"                      = 1
-#   }
-
-#   private_subnet_tags = {
-#     "kubernetes.io/cluster/${local.cluster_name}" = "shared"
-#     "kubernetes.io/role/internal-elb"             = 1
-#   }
- }
+resource "local_file" "kubeconfig" {
+    content     = "${local.kubeconfig}"
+    filename = "${path.module}/kubeconfig"
+}
