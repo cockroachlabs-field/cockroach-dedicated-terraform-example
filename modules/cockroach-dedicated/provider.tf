@@ -1,8 +1,8 @@
 terraform {
   required_providers {
     cockroach = {
-      source  = "terraform.local/local/cockroach"
-      # Other parameters...
+      source = "cockroachdb/cockroach"
+      version = "0.1.0"
     }
   }
 }
