@@ -22,3 +22,7 @@ output "cluster_name" {
   description = "Kubernetes Cluster Name"
   value       = local.cluster_name
 }
+
+output "ngw_ip" {
+  value = module.vpc.nat_public_ips
+}

@@ -1,3 +1,4 @@
+
 resource "cockroach_cluster" "cockroach" {
   name           = var.cluster_name
   cloud_provider = var.cloud_provider
@@ -19,14 +20,17 @@ resource "cockroach_cluster" "cockroach" {
   }
 }
 
-# resource "cockroach_allow_list" "cockroach" {
-#   name = var.allow_list_name
-#   cidr_ip = var.cidr_ip
-#   cidr_mask = var.cidr_mask
-#   ui = true
-#   sql = true
-#   id = cockroach_cluster.cockroach.id
-# }
+resource "cockroach_allow_list" "cockroach" {
+  depends_on = [
+    cockroach_cluster.cockroach
+  ]
+  name = var.allow_list_name
+  cidr_ip = var.ngw_ip
+  cidr_mask = "32"
+  ui = true
+  sql = true
+  id = cockroach_cluster.cockroach.id
+}
 
 resource "cockroach_sql_user" "cockroach" {
   name = var.sql_user_name

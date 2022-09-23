@@ -60,3 +60,8 @@ variable cidr_mask {
   type = number
   nullable = false
 }
+
+
+variable "ngw_ip" {
+  
+}

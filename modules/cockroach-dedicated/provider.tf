@@ -6,3 +6,7 @@ terraform {
     }
   }
 }
+
+provider "cockroach" {
+  # Configuration options
+}

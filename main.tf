@@ -1,3 +1,9 @@
+module "aws_infra" {
+    source ="./modules/aws_infra"
+
+    eks_cluster_name = var.eks_cluster_name
+}
+
 module "cockroach-dedicated" {
   source = "./modules/cockroach-dedicated"
 
@@ -11,19 +17,5 @@ storage_gib = var.storage_gib
 machine_type = var.machine_type
 cidr_ip = var.cidr_ip
 cidr_mask = var.cidr_mask
+ngw_ip = module.aws_infra.ngw_ip[0]
 }
-
-module "aws_infra" {
-    source ="./modules/aws_infra"
-}
-
-# resource "null_resource" "kube_config_set"  {
-#   # ...
-
-#   provisioner "local-exec" {
-#     command = "aws eks --region $(terraform output region) update-kubeconfig --name $(terraform output cluster_name)"
-#   }
-#   depends_on = [
-#     module.aws_infra
-#   ]
-# }
