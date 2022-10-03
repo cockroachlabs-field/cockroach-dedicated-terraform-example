@@ -9,9 +9,11 @@ This repository creates the following resources:
 PreRequisites:
 * Git CLI
 * Terraform
+* AWS CLI (For KubeConfig Auth)
+* Kubectl
 * Cockroach Cloud API Key
 
-Instructions:
+Deployment Instructions:
 
 1. Clone this repository
 ```https://github.com/mbookham7/cockroach-dedicated-terraform-example.git```
@@ -24,3 +26,22 @@ Instructions:
 ```Terraform plan```
 6. Once happy, apply the terraform
 ```terraform apply -auto-approve```
+
+Network Connectivity Testing
+
+1. Retrieve the CRDB Connection string and the DB Console URL from the Cockroach Cloud UI for your newly created cluster. (Currently the provider does not output the connection string)
+
+2. Set up Kubectl to use the generated Kubeconfig file.
+
+```cd modules/aws_infra/```
+```export KUBECONFIG=kubeconfig```
+
+3. Validate connection to the Kubernetes cluster
+
+```kubectl get pods --all-namespaces```
+
+4. Test the network connectivity to both the UI and the DB using a pod
+
+```kubectl run -it network-test-1--image=alpine/curl:3.14 --restart=Never -- curl -vk dsmbcrdbtftexample-6q9.aws-eu-west-2.cockroachlabs.cloud:26257```
+
+```kubectl run -it network-test-2 --image=alpine/curl:3.14 --restart=Never -- curl -vk admin-dsmbcrdbtftexample-6q9.cockroachlabs.cloud:8080/health```

@@ -36,7 +36,7 @@ variable "cluster_nodes" {
 variable "storage_gib" {
   type = number
   nullable = false
-  default = 15
+  default = 20
 }
 
 variable "machine_type" {
