@@ -13,4 +13,14 @@ PreRequisites:
 
 Instructions:
 
-```1. Clone the repository```
+1. Clone this repository
+```https://github.com/mbookham7/cockroach-dedicated-terraform-example.git```
+2. Using the terraform.tfvars.example file, create a terraform.tfvars file with the variables that you'd like to use
+3. Export your Cockroach API Key
+```export COCKROACH_API_KEY=<YOUR_API_KEY>```
+4. Initialise the Terraform code
+```terraform init```
+5. Run Terraform plan and validate it's creating the correct resources
+```Terraform plan```
+6. Once happy, apply the terraform
+```terraform apply -auto-approve```
