@@ -4,7 +4,7 @@ This is an example of how to provision a Cockroach Cloud Dedicated Cluster using
 
 This repository creates the following resources:
 * 1 EKS Cluster with a CIDR of 10.0.0.0/16
-* 1 CRDD Cluster
+* 1 CRDB Cluster
 
 PreRequisites:
 * Git CLI
