@@ -21,15 +21,11 @@ module "eks" {
     one = {
       name = "node-group-1"
 
-      instance_types = ["t3.small"]
+      instance_types = var.instance_types
 
       min_size     = 1
       max_size     = 3
       desired_size = 2
-
-      pre_bootstrap_user_data = <<-EOT
-      echo 'foo bar'
-      EOT
 
       vpc_security_group_ids = [
         aws_security_group.node_group_one.id

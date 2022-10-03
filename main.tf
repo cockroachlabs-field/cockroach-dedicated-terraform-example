@@ -2,6 +2,8 @@ module "aws_infra" {
     source ="./modules/aws_infra"
 
     eks_cluster_name = var.eks_cluster_name
+    region = var.region
+    vpc_name = var.vpc_name
 }
 
 module "cockroach-dedicated" {

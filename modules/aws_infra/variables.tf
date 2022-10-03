@@ -27,3 +27,9 @@ variable "aws_public_subnets" {
 variable "eks_cluster_name" {
   default = "eks-cluster-example"
 }
+
+variable "instance_types" {
+  type = list(string)
+  nullable = false
+  default = ["m5.xlarge"]
+}

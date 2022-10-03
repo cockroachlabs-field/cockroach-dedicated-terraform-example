@@ -32,5 +32,10 @@ variable cidr_mask {
 }
 
 variable eks_cluster_name {
-    default = "example_eks_cluster"
+}
+
+variable "region" {
+}
+
+variable "vpc_name" {
 }
