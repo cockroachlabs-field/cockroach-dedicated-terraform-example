@@ -2,23 +2,20 @@
 resource "cockroach_cluster" "cockroach" {
   name           = var.cluster_name
   cloud_provider = var.cloud_provider
-  wait_for_cluster_ready = true
-  create_spec = {
-    dedicated: {
-      region_nodes = merge(
-        {
-          for k in var.cloud_provider_region: k => "${var.cluster_nodes}"
-        }
-      )
-      hardware = {
-        storage_gib = var.storage_gib
-        machine_spec = {
-          machine_type = var.machine_type
-        }
-      }
-    }
+  dedicated = {
+    storage_gib  = var.storage_gib
+    machine_type = var.machine_type
   }
+  regions = [
+    {
+      name = var.cloud_provider_region
+      node_count = var.cluster_nodes
+    }
+  ]
+
 }
+
+
 
 resource "cockroach_allow_list" "cockroach" {
   depends_on = [
