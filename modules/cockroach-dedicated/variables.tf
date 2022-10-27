@@ -21,15 +21,10 @@ variable "cloud_provider" {
   default = "GCP"
 }
 
-variable "cloud_provider_regions_to_be_fixed" {
-  type = list(string)
-  nullable = false
-  default = ["us-east1"]
-}
-
 variable "cloud_provider_region" {
-  type = string
-  default = "us-east1"
+  type     = list(string)
+  nullable = false
+  default  = ["us-east-1"]
 }
 
 variable "cluster_nodes" {

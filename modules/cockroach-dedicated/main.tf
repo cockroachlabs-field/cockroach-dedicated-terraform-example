@@ -7,12 +7,11 @@ resource "cockroach_cluster" "cockroach" {
     machine_type = var.machine_type
   }
   regions = [
-    {
-      name = var.cloud_provider_region
+    for r in var.cloud_provider_region : {
+      name       = r,
       node_count = var.cluster_nodes
     }
   ]
-
 }
 
 

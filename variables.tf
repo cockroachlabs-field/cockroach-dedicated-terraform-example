@@ -13,9 +13,6 @@ variable "sql_user_password" {
 variable "cloud_provider" {
 }
 
-variable "cloud_provider_regions" {
-}
-
 variable "cloud_provider_region" {
 }
 
