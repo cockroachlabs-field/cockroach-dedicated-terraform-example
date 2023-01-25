@@ -1,4 +1,3 @@
-
 resource "cockroach_cluster" "cockroach" {
   name           = var.cluster_name
   cloud_provider = var.cloud_provider
@@ -25,11 +24,11 @@ resource "cockroach_allow_list" "cockroach" {
   cidr_mask = "32"
   ui = true
   sql = true
-  id = cockroach_cluster.cockroach.id
+  cluster_id = cockroach_cluster.cockroach.id
 }
 
 resource "cockroach_sql_user" "cockroach" {
   name = var.sql_user_name
   password = var.sql_user_password
-  id = cockroach_cluster.cockroach.id
+  cluster_id = cockroach_cluster.cockroach.id
 }
